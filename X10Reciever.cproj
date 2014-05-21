@@ -95,6 +95,18 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="helper.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="helper.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="led.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="led.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.h">
       <SubType>compile</SubType>
     </Compile>
