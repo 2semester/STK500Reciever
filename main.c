@@ -1,9 +1,3 @@
-/*
- * X10Reciever.c
- *
- * Created: 21.05.2014 18:30:49
- *  Author: betabot
- */ 
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #define F_CPU 3686400UL
@@ -28,14 +22,14 @@ ISR(INT2_vect)
 	}
 
 	SendChar(tmp2);
-		if(readycheck == 0 && (PIND & (1<<PD7))){
+	if(readycheck == 0 && (PIND & (1<<PD7))){
 		readycheck = 1;
-		//SendString("ready 1");
+		SendString("ready 1 ");
 	}
 	if(readycheck == 1 && (PIND & (1<<PD7)))
 	{
 		readycheck = 2;
-		//SendString("ready 2");
+		SendString("ready 2 ");
 	}
 	if(readycheck == 1 && !(PIND & (1<<PD7))){
 		readycheck = 0;
@@ -43,11 +37,16 @@ ISR(INT2_vect)
 	}
 	if(readycheck == 2)
 	{
-		SendString("and go");
-	flag++;	
+		//SendString("and go");
+		flag++;	
 		if(flag % 2 == 1)  // foerste cycel
 		{
-			tmp = (PIND & (1<<PD7));			
+			if(readycheck == 0 && (PIND & (1<<PD7))){
+				tmp = 1;
+			}
+			else{
+				tmp = 0;
+			}			
 		}
 
 		if(flag % 2 == 0) // anden cycel
@@ -59,7 +58,7 @@ ISR(INT2_vect)
 				DataBuffer[sendcounter] = '0';
 			}
 			else{
-				//ERROR
+				SendString("ERROR");
 			}
 			sendcounter++;
 		}
@@ -70,6 +69,7 @@ ISR(INT2_vect)
 			char Buffer[4] = {'\0'};
 			shortenstring(&Buffer, DataBuffer);
 			changelight(Buffer);
+			SendString(Buffer);
 			sendcounter = 0;
 			SendString("done sending stuff");
 			flag = 0;
